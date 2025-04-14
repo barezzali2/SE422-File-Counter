@@ -7,7 +7,7 @@ public class MultiThreadCounter {
     private int totalCount = 0;
     private final ReentrantLock lock = new ReentrantLock();
 
-    public int countWith4Threads(String rootPath) throws InterruptedException {
+    public int countWith4Threads(String rootPath) {
         File rootDir = new File(rootPath);
         if (!rootDir.exists() || !rootDir.isDirectory()) {
             throw new IllegalArgumentException("Invalid directory: " + rootPath);
@@ -42,13 +42,16 @@ public class MultiThreadCounter {
         }
 
         for (Thread thread : threads) {
-            thread.join();
+            try{
+                thread.join();
+            }catch(Exception ex) {
+                System.err.println(ex);
+            }
         }
 
         return totalCount;
     }
 
-    // Keep your existing countItems() method unchanged
     private int countItems(File item) {
         if (item.isFile()) {
             return item.getName().toLowerCase().endsWith(".pdf") ? 1 : 0;

@@ -28,9 +28,8 @@ public class Main {
             System.out.println("[Single Thread] found " + count + " in " + duration + " ms");
         });
 
-        singleCounterThread.start();
-
-
+        
+        
         Thread multiCounterThread = new Thread(() -> {
             try {
                 long startTime = System.currentTimeMillis();
@@ -39,19 +38,25 @@ public class Main {
                 // int count = new MultiThreadCounter().countWith4Threads(inputPath);
                 long duration = System.currentTimeMillis() - startTime;
                 System.out.printf("[4 Threads] Found %d PDFs in %d ms%n", counter, duration);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 System.err.println("Counting was interrupted: " + e.getMessage());
             }
         });
-
-
+        
+        
+        
         try{
+            singleCounterThread.start();
             singleCounterThread.join();
+
             multiCounterThread.start();
             multiCounterThread.join();
         }catch(Exception ex) {
             System.err.println(ex);
         }
+
+
+        input.close();
 
 
         
