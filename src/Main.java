@@ -115,30 +115,36 @@ public class Main {
             // Start and join single-threaded counting
             singleCounterThread.start();
             singleCounterThread.join();
-            resultsQueue.put("DONE_SINGLE"); // Signal the completion of single-threaded counting
+            resultsQueue.put("DONE_SINGLE"); 
         
-            // Start and join multi-threaded counting
-            // multiCounterThread.start();
-            // multiCounterThread.join();
-
+            
+            
             long multiStartTime = System.currentTimeMillis();
             int multiCount = multiCounter.countWith4Threads(inputPath, resultsQueue, multiStartTime);
             long multiDuration = System.currentTimeMillis() - multiStartTime;
             resultsQueue.put("Final: [4 Threads] Found " + multiCount + " PDFs in " + multiDuration + " ms");
             resultsQueue.put("DONE_MULTI"); // Signal the completion of multi-threaded counting
-        
-
-
-            // Start and join thread pool counting
-            // threadPoolCounterThread.start();
-            // threadPoolCounterThread.join();
-
+            
+            
+            
             long poolStartTime = System.currentTimeMillis();
             int poolCount = threadPoolCounter.countWithThreadPool(inputPath, resultsQueue, poolStartTime);
             long poolDuration = System.currentTimeMillis() - poolStartTime;
             resultsQueue.put("Final: [Thread Pool] Found " + poolCount + " PDFs in " + poolDuration + " ms");
             resultsQueue.put("DONE_POOL"); // Signal the completion of thread pool counting
-        
+            
+
+            // Start and join multi-threaded counting
+            // multiCounterThread.start();
+            // multiCounterThread.join();
+            // resultsQueue.put("DONE_MULTI"); 
+
+
+            // Start and join thread pool counting
+            // threadPoolCounterThread.start();
+            // threadPoolCounterThread.join();
+            // resultsQueue.put("DONE_POOL"); 
+
 
             // Add a final "DONE" signal to stop the results thread
             resultsQueue.put("DONE");
