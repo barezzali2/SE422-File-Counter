@@ -77,16 +77,25 @@ public class Main {
                         break; // Exit the loop when the final "DONE" signal is encountered
                     } else if ("DONE_SINGLE".equals(result)) {
                         System.out.println("[Single Thread] Counting completed.");
+                        System.out.println();
+                        System.out.println("----------------------");
+                        System.out.println();
                     } else if ("DONE_MULTI".equals(result)) {
                         System.out.println("[4 Threads] Counting completed.");
+                        System.out.println();
+                        System.out.println("----------------------");
+                        System.out.println();
                     } else if ("DONE_POOL".equals(result)) {
                         System.out.println("[Thread Pool] Counting completed.");
+                        System.out.println();
+                        System.out.println("----------------------");
+                        System.out.println();
                     } else {
                         System.out.println(result); // Print progress updates
                     }
         
                     // Add a small delay for better readability
-                    Thread.sleep(200);
+                    Thread.sleep(180);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // Restore the interrupted status
