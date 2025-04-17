@@ -38,35 +38,39 @@ public class Main {
             // System.out.println("[Single Thread] found " + count + " in " + duration + " ms");
         });
 
+
+        MultiThreadCounter multiCounter = new MultiThreadCounter();
+
+        ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
         
         
-        Thread multiCounterThread = new Thread(() -> {
-            long startTime = System.currentTimeMillis();
-            MultiThreadCounter multiCounter = new MultiThreadCounter();
-            int count = multiCounter.countWith4Threads(inputPath, resultsQueue, startTime); // Pass resultsQueue
-            long duration = System.currentTimeMillis() - startTime;
-            try {
-                resultsQueue.put("Final: [4 Threads] Found " + count + " PDFs in " + duration + " ms");
-            } catch (Exception e) {
-                System.err.println("Counting was interrupted: " + e.getMessage());
-            }
-        });
+        // Thread multiCounterThread = new Thread(() -> {
+        //     long startTime = System.currentTimeMillis();
+        //     MultiThreadCounter multiCounter = new MultiThreadCounter();
+        //     int count = multiCounter.countWith4Threads(inputPath, resultsQueue, startTime); // Pass resultsQueue
+        //     long duration = System.currentTimeMillis() - startTime;
+        //     try {
+        //         resultsQueue.put("Final: [4 Threads] Found " + count + " PDFs in " + duration + " ms");
+        //     } catch (Exception e) {
+        //         System.err.println("Counting was interrupted: " + e.getMessage());
+        //     }
+        // });
 
 
 
         // Thread pool counting
-        Thread threadPoolCounterThread = new Thread(() -> {
-            long startTime = System.currentTimeMillis();
-            ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
-            int count = threadPoolCounter.countWithThreadPool(inputPath, resultsQueue, startTime);
-            long duration = System.currentTimeMillis() - startTime;
-            try {
-                resultsQueue.put("Final: [Thread Pool] Found " + count + " PDFs in " + duration + " ms");
-                // System.out.printf("[Thread Pool] Found %d PDFs in %d ms%n", count, duration);
-            } catch (Exception e) {
-                System.err.println("Counting was interrupted: " + e.getMessage());
-            }
-        });
+        // Thread threadPoolCounterThread = new Thread(() -> {
+        //     long startTime = System.currentTimeMillis();
+        //     ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
+        //     int count = threadPoolCounter.countWithThreadPool(inputPath, resultsQueue, startTime);
+        //     long duration = System.currentTimeMillis() - startTime;
+        //     try {
+        //         resultsQueue.put("Final: [Thread Pool] Found " + count + " PDFs in " + duration + " ms");
+        //         // System.out.printf("[Thread Pool] Found %d PDFs in %d ms%n", count, duration);
+        //     } catch (Exception e) {
+        //         System.err.println("Counting was interrupted: " + e.getMessage());
+        //     }
+        // });
 
 
         Thread resultsThread = new Thread(() -> {
@@ -114,15 +118,28 @@ public class Main {
             resultsQueue.put("DONE_SINGLE"); // Signal the completion of single-threaded counting
         
             // Start and join multi-threaded counting
-            multiCounterThread.start();
-            multiCounterThread.join();
+            // multiCounterThread.start();
+            // multiCounterThread.join();
+
+            long multiStartTime = System.currentTimeMillis();
+            int multiCount = multiCounter.countWith4Threads(inputPath, resultsQueue, multiStartTime);
+            long multiDuration = System.currentTimeMillis() - multiStartTime;
+            resultsQueue.put("Final: [4 Threads] Found " + multiCount + " PDFs in " + multiDuration + " ms");
             resultsQueue.put("DONE_MULTI"); // Signal the completion of multi-threaded counting
         
+
+
             // Start and join thread pool counting
-            threadPoolCounterThread.start();
-            threadPoolCounterThread.join();
+            // threadPoolCounterThread.start();
+            // threadPoolCounterThread.join();
+
+            long poolStartTime = System.currentTimeMillis();
+            int poolCount = threadPoolCounter.countWithThreadPool(inputPath, resultsQueue, poolStartTime);
+            long poolDuration = System.currentTimeMillis() - poolStartTime;
+            resultsQueue.put("Final: [Thread Pool] Found " + poolCount + " PDFs in " + poolDuration + " ms");
             resultsQueue.put("DONE_POOL"); // Signal the completion of thread pool counting
         
+
             // Add a final "DONE" signal to stop the results thread
             resultsQueue.put("DONE");
             resultsThread.join();
@@ -130,20 +147,7 @@ public class Main {
             System.err.println(ex);
         }
 
-
         input.close();
-
-
         
     }
 }
-
-// Option 2
-// SingleThreadCounter counterThread = new SingleThreadCounter(directoryPath);
-// Thread singleThread = new Thread(counterThread);
-// singleThread.start();
-// try{
-//     singleThread.join();
-// }catch(Exception ex) {
-//     System.err.println(ex);
-// }
