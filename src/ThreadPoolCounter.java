@@ -4,8 +4,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
+// References: https://medium.com/@b.stoilov/everything-you-need-to-know-about-thread-pools-in-java-fe02e803d339
+// https://chatgpt.com/ - How to utilize half of the available CPUs in the thread pool?
+
+
 public class ThreadPoolCounter {
-    private int pdfCount = 0; // Shared cumulative count
+    private int pdfCount = 0; 
     private final ReentrantLock lock = new ReentrantLock(); // Lock for thread-safe updates
 
     public int countWithThreadPool(String rootPath, BlockingQueue<String> resultsQueue, long startTime) {
@@ -42,7 +46,7 @@ public class ThreadPoolCounter {
                 try {
                     pdfCount++; // Increment the shared cumulative count
                     long elapsedTime = System.currentTimeMillis() - startTime; // Calculate elapsed time
-                    resultsQueue.put("[Thread Pool] Found " + pdfCount + " PDF in " + elapsedTime + " ms");
+                    resultsQueue.put("[Thread Pool] Found " + pdfCount + " PDFs in " + elapsedTime + " ms");
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } finally {

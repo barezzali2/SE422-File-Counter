@@ -1,7 +1,11 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+// Rawezh Dana Fadhil - rd21176@auis.edu.krd
+// Barez Zuber Ali - bz20458@auis.edu.krd
+
+
+// References: https://www.baeldung.com/java-blocking-queue
+// https://www.tpointtech.com/blockingqueue-in-java
+// https://chatgpt.com/ - How to use put and take methods in LinkedBlockingQueue (BlockingQueue) for the results queue?
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -9,21 +13,9 @@ public class Main {
     public static void main(String... args) {
 
         BlockingQueue<String> resultsQueue = new LinkedBlockingQueue<>();
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("Please enter a path of an existing directory: ");
-        String directoryPath = input.nextLine().trim();
-
-        File directory = new File(directoryPath);
-        while(!directory.exists() || !directory.isDirectory()) {
-            System.out.println("Invalid directory. Please enter a valid directory: ");
-            directoryPath = input.nextLine().trim();
-            directory = new File(directoryPath);
-        }
-        System.out.println("Thanks! Valid directory! " + directory.getAbsolutePath());
+        String directoryPath = DirectoryPathHandler.getValidPath(); // Get the valid directory path
 
 
-        // Option 1 
         final String inputPath = directoryPath; //  Making the directory path final because of the lamdba expression
         Thread singleCounterThread = new Thread(() -> {
             long startTime = System.currentTimeMillis();
@@ -35,12 +27,10 @@ public class Main {
             } catch (Exception e) {
                 System.err.println("Counting was interrupted: " + e.getMessage());
             }
-            // System.out.println("[Single Thread] found " + count + " in " + duration + " ms");
         });
 
 
         MultiThreadCounter multiCounter = new MultiThreadCounter();
-
         ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
         
         
@@ -77,6 +67,7 @@ public class Main {
             try {
                 while (true) {
                     String result = resultsQueue.take(); // Blocks until a result is available
+
                     if ("DONE".equals(result)) {
                         break; // Exit the loop when the final "DONE" signal is encountered
                     } else if ("DONE_SINGLE".equals(result)) {
@@ -98,7 +89,7 @@ public class Main {
                         System.out.println(result); // Print progress updates
                     }
         
-                    // Add a small delay for better readability
+                    // Adding a small delay
                     Thread.sleep(180);
                 }
             } catch (InterruptedException e) {
@@ -152,8 +143,6 @@ public class Main {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-
-        input.close();
         
     }
 }

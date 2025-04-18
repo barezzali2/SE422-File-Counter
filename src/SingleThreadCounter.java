@@ -2,7 +2,6 @@ import java.io.File;
 import java.util.concurrent.BlockingQueue;
 
 
-// Option 1
 public class SingleThreadCounter{
     private int pdfCount = 0;
 

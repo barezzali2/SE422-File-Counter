@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
+// References: https://www.tpointtech.com/java-arraylist
+
 public class MultiThreadCounter {
-    private int totalCount = 0;
+    private int pdfCount = 0;
     private final ReentrantLock lock = new ReentrantLock();
 
     public int countWith4Threads(String rootPath, BlockingQueue<String> resultsQueue, long startTime) {
@@ -43,7 +45,7 @@ public class MultiThreadCounter {
                 }
             }
 
-        return totalCount;
+        return pdfCount;
     }
 
     private void countItems(File item, BlockingQueue<String> resultsQueue, long startTime) {
@@ -51,9 +53,9 @@ public class MultiThreadCounter {
             if (item.getName().toLowerCase().endsWith(".pdf")) {
                 lock.lock(); // Lock before updating the shared count
                 try {
-                    totalCount++; // Increment the shared cumulative count
+                    pdfCount++; // Increment the shared cumulative count
                     long elapsedTime = System.currentTimeMillis() - startTime;
-                    resultsQueue.put("[4 Threads] Found " + totalCount + " PDFs in " + elapsedTime + " ms");
+                    resultsQueue.put("[4 Threads] Found " + pdfCount + " PDFs in " + elapsedTime + " ms");
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } finally {
