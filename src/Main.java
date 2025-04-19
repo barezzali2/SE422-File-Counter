@@ -4,7 +4,7 @@
 
 // References: https://www.baeldung.com/java-blocking-queue
 // https://www.tpointtech.com/blockingqueue-in-java
-// https://chatgpt.com/ - How to use put and take methods in LinkedBlockingQueue (BlockingQueue) for the results queue?
+// https://chatgpt.com/ --> How to use put and take methods in LinkedBlockingQueue (BlockingQueue) for the results queue?
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

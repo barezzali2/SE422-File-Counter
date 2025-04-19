@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 // References: https://medium.com/@b.stoilov/everything-you-need-to-know-about-thread-pools-in-java-fe02e803d339
-// https://chatgpt.com/ - How to utilize half of the available CPUs in the thread pool?
+// https://chatgpt.com/ --> How to utilize half of the available CPUs in the thread pool?
 
 
 public class ThreadPoolCounter {
