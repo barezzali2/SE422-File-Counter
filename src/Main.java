@@ -33,34 +33,6 @@ public class Main {
         MultiThreadCounter multiCounter = new MultiThreadCounter();
         ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
         
-        
-        // Thread multiCounterThread = new Thread(() -> {
-        //     long startTime = System.currentTimeMillis();
-        //     MultiThreadCounter multiCounter = new MultiThreadCounter();
-        //     int count = multiCounter.countWith4Threads(inputPath, resultsQueue, startTime); // Pass resultsQueue
-        //     long duration = System.currentTimeMillis() - startTime;
-        //     try {
-        //         resultsQueue.put("Final: [4 Threads] Found " + count + " PDFs in " + duration + " ms");
-        //     } catch (Exception e) {
-        //         System.err.println("Counting was interrupted: " + e.getMessage());
-        //     }
-        // });
-
-
-
-        // Thread pool counting
-        // Thread threadPoolCounterThread = new Thread(() -> {
-        //     long startTime = System.currentTimeMillis();
-        //     ThreadPoolCounter threadPoolCounter = new ThreadPoolCounter();
-        //     int count = threadPoolCounter.countWithThreadPool(inputPath, resultsQueue, startTime);
-        //     long duration = System.currentTimeMillis() - startTime;
-        //     try {
-        //         resultsQueue.put("Final: [Thread Pool] Found " + count + " PDFs in " + duration + " ms");
-        //         // System.out.printf("[Thread Pool] Found %d PDFs in %d ms%n", count, duration);
-        //     } catch (Exception e) {
-        //         System.err.println("Counting was interrupted: " + e.getMessage());
-        //     }
-        // });
 
 
         Thread resultsThread = new Thread(() -> {
@@ -123,18 +95,6 @@ public class Main {
             long poolDuration = System.currentTimeMillis() - poolStartTime;
             resultsQueue.put("Final: [Thread Pool] Found " + poolCount + " PDFs in " + poolDuration + " ms");
             resultsQueue.put("DONE_POOL"); // Signal the completion of thread pool counting
-            
-
-            // Start and join multi-threaded counting
-            // multiCounterThread.start();
-            // multiCounterThread.join();
-            // resultsQueue.put("DONE_MULTI"); 
-
-
-            // Start and join thread pool counting
-            // threadPoolCounterThread.start();
-            // threadPoolCounterThread.join();
-            // resultsQueue.put("DONE_POOL"); 
 
 
             // Add a final "DONE" signal to stop the results thread
